@@ -1,17 +1,13 @@
-FROM node:22.11.0 AS build 
-
-WORKDIR /usr/src/app 
-
-COPY package*.json ./ 
-
-RUN npm install 
-
-COPY . . 
-
-FROM node:22.11.0 AS runtime 
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-COPY --from=build /usr/src/app ./
+COPY package*.json ./
 
-CMD [ "npm","run dev" ]
+RUN npm install
+
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]
