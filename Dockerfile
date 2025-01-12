@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -8,6 +8,12 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5173
+FROM node:20-alpine AS runtime
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app ./
+
+EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
